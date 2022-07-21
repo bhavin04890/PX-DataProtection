@@ -3,8 +3,7 @@ if [ ! -f ~/usr/local/bin/eksctl ]; then
 	curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
 	sudo mv /tmp/eksctl /usr/local/bin
 	echo "eksctl successfully installed with version:" 
-	eksctl versio
-	echo "/n /n" 
+	eksctl version
 fi
 
 if [ ! -f ~/usr/local/bin/kubectl ]; then
@@ -16,7 +15,6 @@ if [ ! -f ~/usr/local/bin/kubectl ]; then
 	export PATH=$PATH:~/usr/local/bin/
 	echo "kubectl installed successfully with version:"
 	kubectl version --client
-	echo "/n /n"
 fi
 
 
@@ -29,11 +27,9 @@ while [ "$(kubectl get nodes -o jsonpath='{range .items[*]}{@.metadata.name}:{ra
 done
 
 kubectl get nodes 
-echo "/n /n"
 echo "Step 4: Installing Stork on EKS cluster!"
 curl -fsL -o stork-spec.yaml "https://install.portworx.com/pxbackup?comp=stork&storkNonPx=true"
 kubectl apply -f stork-spec.yaml
-echo "/n /n "
 echo "Step 5: Deploying Demo Applicaton"
 kubectl create ns demo
 sleep 5s
@@ -44,5 +40,4 @@ sleep 30s
 kubectl get all -n demo
 sleep 10s
 kubectl get pvc -n demo
-echo "/n /n"
 echo "Demo Application deployed successfully!"
