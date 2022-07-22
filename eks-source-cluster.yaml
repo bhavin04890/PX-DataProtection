@@ -1,0 +1,29 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+metadata:
+  name: px-dataprotection-source
+  region: us-east-1
+  version: "1.21"
+managedNodeGroups:
+  - name: worker-nodes
+    instanceType: m5.xlarge
+    minSize: 3
+    maxSize: 3
+    volumeSize: 50
+    amiFamily: AmazonLinux2
+    tags:
+      nodegroup-role: worker
+    iam:
+      attachPolicyARNs:
+        - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+        - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+        - arn:aws:iam::aws:policy/ElasticLoadBalancingFullAccess
+      withAddonPolicies:
+        imageBuilder: true
+        autoScaler: true
+        ebs: true
+        fsx: true
+        efs: true
+        albIngress: true
+        cloudWatch: true

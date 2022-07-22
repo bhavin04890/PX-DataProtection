@@ -17,20 +17,26 @@ if [ ! -f ~/usr/local/bin/kubectl ]; then
 	kubectl version --client
 fi
 
-
-echo "Step 3: Deploying EKS cluster. This might take close to 20 minutes!"
-eksctl create cluster -f eks-cluster.yaml
-
-while [ "$(kubectl get nodes -o jsonpath='{range .items[*]}{@.metadata.name}:{range @.status.conditions[*]}{@.type}={@.status};{end}{end}' | grep "Ready=True")" != "true" ]; do
-   sleep 5m
-   echo "Waiting for EKS worker nodes to be ready."
-done
+echo "Step 3: Installing destination EKS cluster. This might take close to 20 minutes"
+eksctl create cluster -f eks-destination-cluster.yaml
 
 kubectl get nodes 
-echo "Step 4: Installing Stork on EKS cluster!"
+kubectl create ns demo
+
+
+echo "Step 4: Installing Stork on destination EKS cluster"
 curl -fsL -o stork-spec.yaml "https://install.portworx.com/pxbackup?comp=stork&storkNonPx=true"
 kubectl apply -f stork-spec.yaml
-echo "Step 5: Deploying Demo Applicaton"
+
+
+echo "Step 5: Deploying source EKS cluster. This might take close to 20 minutes!"
+eksctl create cluster -f eks-source-cluster.yaml
+
+kubectl get nodes 
+echo "Step 6: Installing Stork on EKS cluster!"
+curl -fsL -o stork-spec.yaml "https://install.portworx.com/pxbackup?comp=stork&storkNonPx=true"
+kubectl apply -f stork-spec.yaml
+echo "Step 7: Deploying Demo Applicaton"
 kubectl create ns demo
 sleep 5s
 kubectl apply -f postgres.yaml -n demo
@@ -41,3 +47,5 @@ kubectl get all -n demo
 sleep 10s
 kubectl get pvc -n demo
 echo "Demo Application deployed successfully!"
+
+echo "------- Lab Ready to use -------"
