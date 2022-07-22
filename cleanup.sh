@@ -23,7 +23,6 @@ kubectl delete deploy stork -n kube-system
 sleep 15 
 eksctl delete cluster -f eks-destination-cluster.yaml
 
-
 eksctl utils write-kubeconfig --cluster=px-dataprotection-source 
 kubectl delete -f k8s-logo.yaml -n demo
 sleep 30
@@ -32,3 +31,11 @@ sleep 15
 kubectl delete deploy stork -n kube-system 
 sleep 15 
 eksctl delete cluster -f eks-source-cluster.yaml
+
+echo "Deleting Backup buckets"
+
+REGL_BUCKET="aws-12398-bucket"
+OBJL_BUCKET="aws-12398-objl-bucket"
+
+aws s3api delete-bucket --bucket $REGL_BUCKET --region us-east-1
+aws s3api delete-bucket --bucket $OBJL_BUCKET --region us-east-1
