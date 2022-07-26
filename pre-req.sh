@@ -22,6 +22,14 @@ if [ ! -f ~/usr/local/bin/kubectl ]; then
 	kubectl version --client
 fi
 
+echo "Creating S3 buckets as backup targets"
+
+aws s3api create-bucket --bucket $REGL_BUCKET --region us-east-1
+
+aws s3api create-bucket --bucket $OBJL_BUCKET --region us-east-1 --object-lock-enabled-for-bucket 
+aws s3api put-object-lock-configuration --bucket $OBJL_BUCKET --object-lock-configuration '{ "ObjectLockEnabled": "Enabled", "Rule": { "DefaultRetention": { "Mode": "COMPLIANCE", "Days": 1 }}}'
+
+
 echo "Step 3: Installing destination EKS cluster. This might take close to 20 minutes"
 eksctl create cluster -f eks-destination-cluster.yaml
 
@@ -37,7 +45,7 @@ kubectl get nodes
 echo "Step 6: Installing Stork on EKS cluster!"
 curl -fsL -o stork-spec.yaml "https://install.portworx.com/pxbackup?comp=stork&storkNonPx=true"
 kubectl apply -f stork-spec.yaml
-echo "Step 7: Deploying Demo Applicaton"
+echo "Step 7: Deploying Demo Applicatons"
 kubectl create ns demo
 sleep 5s
 kubectl apply -f postgres.yaml -n demo
@@ -47,13 +55,28 @@ sleep 30s
 kubectl get all -n demo
 sleep 10s
 kubectl get pvc -n demo
-echo "Demo Application deployed successfully!"
-echo "Creating S3 buckets as backup targets"
 
-aws s3api create-bucket --bucket $REGL_BUCKET --region us-east-1
+kubectl create ns pacman
+sleep 5s
+kubectl apply -f mongo-deployment.yaml -n pacman
+sleep 5 
+kubectl apply -f pacman-deployment.yaml -n pacman
+sleep 5 
+kubectl apply -f mongo-pvc.yaml -n pacman
+sleep 5
+kubectl apply -f mongo-service.yaml -n pacman
+sleep 5 
+kubectl apply -f pacman-service.yaml -n pacman 
+sleep 5 
 
-aws s3api create-bucket --bucket $OBJL_BUCKET --region us-east-1 --object-lock-enabled-for-bucket 
-aws s3api put-object-lock-configuration --bucket $OBJL_BUCKET --object-lock-configuration '{ "ObjectLockEnabled": "Enabled", "Rule": { "DefaultRetention": { "Mode": "COMPLIANCE", "Days": 1 }}}'
+echo "Demo Applications deployed successfully!"
+
+echo "Application endpoints:"
+echo "Logo App:"
+kubectl get svc -n demo 
+
+echo "Pacman App:"
+kubectl get svc -n pacman -l name=pacman 
 
 
 echo "------- Lab Ready to use -------"
