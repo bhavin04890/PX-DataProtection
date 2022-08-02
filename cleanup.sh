@@ -6,10 +6,9 @@ if [ ! -f ~/usr/local/bin/eksctl ]; then
 fi
 
 if [ ! -f ~/usr/local/bin/kubectl ]; then
-	curl --silent -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+	curl --silent -LO https://dl.k8s.io/release/v1.21.0/bin/linux/amd64/kubectl
 	chmod +x kubectl
-	mkdir -p ~/.local/bin
-	mv ./kubectl ~/usr/local/bin/
+	sudo cp ./kubectl ~/usr/local/bin/
 	export PATH=$PATH:~/usr/local/bin/
 fi
 
@@ -46,7 +45,8 @@ eksctl delete cluster -f eks-source-cluster.yaml
 echo "Deleting Backup buckets"
 
 REGL_BUCKET="aws-12398-bucket"
-OBJL_BUCKET="aws-12398-objl-bucket"
+#OBJL_BUCKET="aws-12398-objl-bucket"
 
-aws s3api delete-bucket --bucket $REGL_BUCKET --region us-east-1
-aws s3api delete-bucket --bucket $OBJL_BUCKET --region us-east-1
+aws s3 rb s3://REGL_BUCKET --force
+#aws s3api delete-bucket --bucket $REGL_BUCKET --region us-east-1
+#aws s3api delete-bucket --bucket $OBJL_BUCKET --region us-east-1
