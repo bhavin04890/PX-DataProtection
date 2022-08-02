@@ -46,9 +46,9 @@ eksctl delete cluster -f eks-source-cluster.yaml
 
 echo "Deleting Backup buckets"
 
-REGL_BUCKET="aws-12398-bucket"
+REGL_BUCKET="pxbackup-demo"
 #OBJL_BUCKET="aws-12398-objl-bucket"
 
-aws s3 rb s3://REGL_BUCKET --force
+aws s3 rb s3://REGL_BUCKET 
 #aws s3api delete-bucket --bucket $REGL_BUCKET --region us-east-1
 #aws s3api delete-bucket --bucket $OBJL_BUCKET --region us-east-1
