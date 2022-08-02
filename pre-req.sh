@@ -1,6 +1,6 @@
 #!/bin/bash
 
-REGL_BUCKET="aws-12398-bucket"
+REGL_BUCKET="pxbackup-demo"
 #OBJL_BUCKET="aws-12398-objl-bucket"
 
 if [ ! -f ~/usr/local/bin/eksctl ]; then
