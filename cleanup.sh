@@ -2,7 +2,7 @@ echo "Cleaning up the AWS Immersion Day labs"
 
 if [ ! -f ~/usr/local/bin/eksctl ]; then
 	curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
-	sudo mv /tmp/eksctl /usr/local/bin
+	sudo cp /tmp/eksctl /usr/local/bin
 fi
 
 if [ ! -f ~/usr/local/bin/kubectl ]; then
