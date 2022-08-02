@@ -6,7 +6,7 @@ REGL_BUCKET="pxbackup-demo"
 if [ ! -f ~/usr/local/bin/eksctl ]; then
 	echo "Step 1: Installing eksctl to deploy Amazon EKS clusters"
 	curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
-	sudo mv /tmp/eksctl /usr/local/bin
+	sudo cp /tmp/eksctl /usr/local/bin
 	echo "eksctl successfully installed with version:" 
 	eksctl version
 fi
