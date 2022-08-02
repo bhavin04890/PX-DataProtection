@@ -2,7 +2,7 @@ apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 metadata:
   name: px-dataprotection-source
-  region: us-east-1
+  region: us-west-2
   version: "1.21"
 managedNodeGroups:
   - name: worker-nodes
