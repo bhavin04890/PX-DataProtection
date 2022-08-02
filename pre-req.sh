@@ -1,7 +1,7 @@
 #!/bin/bash
 
 REGL_BUCKET="aws-12398-bucket"
-OBJL_BUCKET="aws-12398-objl-bucket"
+#OBJL_BUCKET="aws-12398-objl-bucket"
 
 if [ ! -f ~/usr/local/bin/eksctl ]; then
 	echo "Step 1: Installing eksctl to deploy Amazon EKS clusters"
@@ -24,10 +24,10 @@ fi
 
 echo "Creating S3 buckets as backup targets"
 
-aws s3api create-bucket --bucket $REGL_BUCKET --region us-east-1
+aws s3api create-bucket --bucket $REGL_BUCKET --region us-west-2
 
-aws s3api create-bucket --bucket $OBJL_BUCKET --region us-east-1 --object-lock-enabled-for-bucket 
-aws s3api put-object-lock-configuration --bucket $OBJL_BUCKET --object-lock-configuration '{ "ObjectLockEnabled": "Enabled", "Rule": { "DefaultRetention": { "Mode": "COMPLIANCE", "Days": 1 }}}'
+#aws s3api create-bucket --bucket $OBJL_BUCKET --region us-west-2 --object-lock-enabled-for-bucket 
+#aws s3api put-object-lock-configuration --bucket $OBJL_BUCKET --object-lock-configuration '{ "ObjectLockEnabled": "Enabled", "Rule": { "DefaultRetention": { "Mode": "COMPLIANCE", "Days": 1 }}}'
 
 
 echo "Step 3: Installing destination EKS cluster. This might take close to 20 minutes"
