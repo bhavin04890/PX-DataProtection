@@ -13,7 +13,7 @@ if [ ! -f ~/usr/local/bin/kubectl ]; then
 fi
 
 echo "Deleting the destination cluster"
-eksctl utils write-kubeconfig --cluster px-dataprotection-destination -r us-east-1
+eksctl utils write-kubeconfig --cluster px-dataprotection-destination -r us-west-2
 kubectl delete -f k8s-logo.yaml -n demo
 sleep 30
 kubectl delete -f postgres.yaml -n demo 
@@ -22,7 +22,7 @@ kubectl delete deploy stork -n kube-system
 sleep 15 
 eksctl delete cluster -f eks-destination-cluster.yaml
  
-eksctl utils write-kubeconfig --cluster px-dataprotection-source -r us-east-1
+eksctl utils write-kubeconfig --cluster px-dataprotection-source -r us-west-2
 kubectl delete -f k8s-logo.yaml -n demo
 sleep 30
 kubectl delete -f postgres.yaml -n demo 
