@@ -1,3 +1,5 @@
+#!/bin/bash
+
 echo "Cleaning up the AWS Immersion Day labs" 
 
 if [ ! -f ~/usr/local/bin/eksctl ]; then
@@ -8,8 +10,8 @@ fi
 if [ ! -f ~/usr/local/bin/kubectl ]; then
 	curl --silent -LO https://dl.k8s.io/release/v1.21.0/bin/linux/amd64/kubectl
 	chmod +x kubectl
-	sudo cp ./kubectl ~/usr/local/bin/
-	export PATH=$PATH:~/usr/local/bin/
+	sudo cp ./kubectl /usr/local/bin/
+	export PATH=$PATH:/usr/local/bin/
 fi
 
 echo "Deleting the destination cluster"
