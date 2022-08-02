@@ -23,7 +23,8 @@ fi
 
 echo "Creating S3 buckets as backup targets"
 
-aws s3api create-bucket --bucket $REGL_BUCKET --region us-west-2
+#aws s3api create-bucket --bucket $REGL_BUCKET --region us-west-2
+aws s3 mb s3://$REGL_BUCKET --region us-west-2
 
 #aws s3api create-bucket --bucket $OBJL_BUCKET --region us-west-2 --object-lock-enabled-for-bucket 
 #aws s3api put-object-lock-configuration --bucket $OBJL_BUCKET --object-lock-configuration '{ "ObjectLockEnabled": "Enabled", "Rule": { "DefaultRetention": { "Mode": "COMPLIANCE", "Days": 1 }}}'
