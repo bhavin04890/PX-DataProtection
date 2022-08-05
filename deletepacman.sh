@@ -10,5 +10,7 @@ kubectl delete -f mongo-pvc.yaml -n pacman
 sleep 10
 kubectl delete -f pacman-deployment.yaml -n pacman
 sleep 10
+kubectl delete ns pacman
+sleep 30
 
 echo "Pacman delete 'Accidently'"

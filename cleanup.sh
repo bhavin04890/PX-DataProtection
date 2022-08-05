@@ -20,15 +20,19 @@ kubectl delete -f k8s-logo.yaml -n demo
 sleep 30
 kubectl delete -f postgres.yaml -n demo 
 sleep 15
+kubectl delete ns demo
 kubectl delete deploy stork -n kube-system 
 sleep 15 
 eksctl delete cluster -f eks-destination-cluster.yaml
+
  
 eksctl utils write-kubeconfig --cluster px-dataprotection-source -r us-west-2
-kubectl delete -f k8s-logo.yaml -n demo
-sleep 30
-kubectl delete -f postgres.yaml -n demo 
-sleep 15
+#kubectl delete -f k8s-logo.yaml -n demo
+#sleep 30
+#kubectl delete -f postgres.yaml -n demo 
+#sleep 15
+kubectl delete ns demo
+sleep 5
 kubectl delete deploy stork -n kube-system 
 sleep 15 
 kubectl delete -f mongo-service.yaml -n pacman
@@ -41,7 +45,7 @@ kubectl delete -f pacman-deployment.yaml -n pacman
 sleep 15 
 kubectl delete -f mongo-pvc.yaml -n pacman
 sleep 15
-
+kubectl delete ns pacman
 eksctl delete cluster -f eks-source-cluster.yaml
 
 echo "Deleting Backup buckets"
