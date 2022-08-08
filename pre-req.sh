@@ -1,6 +1,11 @@
 #!/bin/bash
 
-REGL_BUCKET="pxbackup-demo"
+
+echo -n "Please enter a unique name for your S3 bucket and press [ENTER]: "
+read REGL_BUCKET
+echo "" | awk '{print $1}'
+
+#REGL_BUCKET="pxbackup-demo"
 #OBJL_BUCKET="aws-12398-objl-bucket"
 
 if [ ! -f ~/usr/local/bin/eksctl ]; then
@@ -78,5 +83,7 @@ kubectl get svc -n demo
 echo "Pacman App:"
 kubectl get svc -n pacman -l name=pacman 
 
+echo "S3 Bucket:"
+aws s3 ls 
 
 echo "------- Lab Ready to use -------"
